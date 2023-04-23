@@ -32,7 +32,7 @@ export default function SignUpPage() {
           console.log(response);
           navigate("/");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert(err.response.data));
     } else {
       alert("Senhas não são iguais!");
     }
