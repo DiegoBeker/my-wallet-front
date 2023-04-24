@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { TiDelete } from "react-icons/ti";
 
-export default function Transaction({ date, description, value, type }) {
+export default function Transaction({id, date, description, value, type }) {
   return (
     <ListItemContainer>
       <div>
@@ -30,7 +30,7 @@ const ListItemContainer = styled.li`
     display: flex;
   }
   svg{
-    margin: 0 5px;
+    margin-left: 5px;
     color: #C6C6C6;
   }
 `;

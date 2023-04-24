@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import Transaction from "../components/Transaction";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../contexts/UserContext";
 import axios from "axios";
 import BASE_URL from "../constants/baseUrl";
 import Header from "../components/Header";
 import { Oval } from "react-loader-spinner";
+import Transactions from "../components/Transactions";
 
 export default function HomePage() {
   const [transactions, setTransactions] = useState(undefined);
@@ -74,25 +74,11 @@ export default function HomePage() {
       <Header logOut={logOut} />
 
       <TransactionsContainer>
-        <ul>
-          {transactions.map((t) => (
-            <Transaction
-              key={t._id}
-              id={t._id}
-              date={t.date}
-              description={t.description}
-              value={t.value}
-              type={t.type}
-            />
-          ))}
-        </ul>
-
-        <article>
-          <strong>Saldo</strong>
-          <Value color={balance >= 0 ? "positivo" : "negativo"}>
-            {balance.toFixed(2)}
-          </Value>
-        </article>
+        {transactions.length === 0 ? (
+          <NoTransactionsMessage>Não há registros de entrada ou saída</NoTransactionsMessage>
+        ) : (
+          <Transactions transactions={transactions} balance={balance} />
+        )}
       </TransactionsContainer>
 
       <ButtonsContainer>
@@ -175,14 +161,17 @@ const ButtonsContainer = styled.section`
   }
 `;
 
-const Value = styled.div`
-  font-size: 16px;
-  text-align: right;
-  color: ${(props) => (props.color === "positivo" ? "green" : "red")};
-`;
-
 const LoaderContainer = styled.div`
   height: 80px;
   width: 80px;
   margin: auto;
+`;
+
+const NoTransactionsMessage = styled.p`
+  width: 180px;
+  font-size: 20px;
+  font-weight: 400;
+  color: #868686;
+  margin: auto;
+  text-align: center;
 `;

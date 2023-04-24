@@ -112,4 +112,7 @@ const SingUpContainer = styled.section`
     align-items: center;
     justify-content: center;
   }
+  a{
+    margin-top: 10px;
+  }
 `;

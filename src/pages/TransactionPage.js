@@ -109,12 +109,16 @@ const TransactionsContainer = styled.main`
     justify-content: space-between;
     margin-bottom: 40px;
     align-items: center;
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+    }
     svg {
       font-size: 26px;
       color: white;
     }
   }
-  button{
+  button {
     display: flex;
     align-items: center;
     justify-content: center;
