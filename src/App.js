@@ -6,6 +6,7 @@ import SignUpPage from "./pages/SignUpPage";
 import TransactionsPage from "./pages/TransactionPage";
 import UserContext from "./contexts/UserContext";
 import { useState } from "react";
+import EditTransactionPage from "./pages/EditTransactionPage";
 
 export default function App() {
   const [user, setUser] = useState(undefined);
@@ -18,8 +19,8 @@ export default function App() {
             <Route path="/" element={<SignInPage />} />
             <Route path="/cadastro" element={<SignUpPage />} />
             <Route path="/home" element={<HomePage />} />
-            <Route path="/nova-transacao/:tipo" element={<TransactionsPage />}
-            />
+            <Route path="/nova-transacao/:tipo" element={<TransactionsPage />} />
+            <Route path="/editar-registro/:tipo" element={<EditTransactionPage />} />
           </Routes>
         </BrowserRouter>
       </PagesContainer>

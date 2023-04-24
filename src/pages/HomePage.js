@@ -14,6 +14,7 @@ export default function HomePage() {
   const [balance, setBalance] = useState(0);
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -42,11 +43,34 @@ export default function HomePage() {
       navigate("/");
     }
     // eslint-disable-next-line
-  }, []);
+  }, [refresh]);
 
   function logOut() {
     localStorage.removeItem("userData");
     navigate("/");
+  }
+
+  function deleteTransaction(id) {
+    if (window.confirm("Deseja apagar registro?")) {
+      if (user) {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        axios
+          .delete(`${BASE_URL}/transactions/${id}`, config)
+          .then((response) => {
+            navigate("/home");
+            setRefresh(!refresh)
+          })
+          .catch((err) => {
+            alert(err.response.data);
+          });
+      } else {
+        navigate("/");
+      }
+    }
   }
 
   if (transactions === undefined) {
@@ -69,6 +93,7 @@ export default function HomePage() {
       </HomeContainer>
     );
   }
+
   return (
     <HomeContainer>
       <Header logOut={logOut} />
@@ -77,7 +102,7 @@ export default function HomePage() {
         {transactions.length === 0 ? (
           <NoTransactionsMessage>Não há registros de entrada ou saída</NoTransactionsMessage>
         ) : (
-          <Transactions transactions={transactions} balance={balance} />
+          <Transactions transactions={transactions} balance={balance} deleteTransaction={deleteTransaction} />
         )}
       </TransactionsContainer>
 
