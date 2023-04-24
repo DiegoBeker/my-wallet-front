@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { BiExit } from "react-icons/bi";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import Transaction from "../components/Transaction";
@@ -7,13 +6,14 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from "../contexts/UserContext";
 import axios from "axios";
 import BASE_URL from "../constants/baseUrl";
+import Header from "../components/Header";
+import { Oval } from "react-loader-spinner";
 
 export default function HomePage() {
   const [transactions, setTransactions] = useState(undefined);
   const [balance, setBalance] = useState(0);
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  console.log(transactions);
 
   useEffect(() => {
     if (user) {
@@ -44,25 +44,41 @@ export default function HomePage() {
     // eslint-disable-next-line
   }, []);
 
-  function logOut(){
+  function logOut() {
     localStorage.removeItem("userData");
     navigate("/");
   }
 
   if (transactions === undefined) {
-    return <>Carregando...</>;
+    return (
+      <HomeContainer>
+        <LoaderContainer>
+          <Oval
+            height={80}
+            width={80}
+            color="#fff"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+            ariaLabel="oval-loading"
+            secondaryColor="#dedede"
+            strokeWidth={2}
+            strokeWidthSecondary={2}
+          />
+        </LoaderContainer>
+      </HomeContainer>
+    );
   }
   return (
     <HomeContainer>
-      <Header>
-        <h1>Olá, {user.name}</h1>
-        <BiExit onClick={logOut}/>
-      </Header>
+      <Header logOut={logOut} />
 
       <TransactionsContainer>
         <ul>
           {transactions.map((t) => (
             <Transaction
+              key={t._id}
+              id={t._id}
               date={t.date}
               description={t.description}
               value={t.value}
@@ -112,15 +128,7 @@ const HomeContainer = styled.div`
   flex-direction: column;
   height: calc(100vh - 50px);
 `;
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2px 5px 2px;
-  margin-bottom: 15px;
-  font-size: 26px;
-  color: white;
-`;
+
 const TransactionsContainer = styled.article`
   flex-grow: 1;
   background-color: #fff;
@@ -131,6 +139,13 @@ const TransactionsContainer = styled.article`
   flex-direction: column;
   justify-content: space-between;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  & {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
   article {
     display: flex;
     justify-content: space-between;
@@ -164,4 +179,10 @@ const Value = styled.div`
   font-size: 16px;
   text-align: right;
   color: ${(props) => (props.color === "positivo" ? "green" : "red")};
+`;
+
+const LoaderContainer = styled.div`
+  height: 80px;
+  width: 80px;
+  margin: auto;
 `;

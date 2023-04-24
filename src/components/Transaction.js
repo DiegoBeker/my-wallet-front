@@ -1,16 +1,19 @@
 import styled from "styled-components";
+import { TiDelete } from "react-icons/ti";
 
-export default function Transaction({date, description, value, type}){
-
-    return(
-        <ListItemContainer>
-            <div>
-              <span>{date}</span>
-              <strong>{description}</strong>
-            </div>
-            <Value color={type}>{value}</Value>
-          </ListItemContainer>
-    );
+export default function Transaction({ date, description, value, type }) {
+  return (
+    <ListItemContainer>
+      <div>
+        <span>{date}</span>
+        <strong>{description}</strong>
+      </div>
+      <div>
+        <Value color={type}>{value}</Value>
+        <TiDelete />
+      </div>
+    </ListItemContainer>
+  );
 }
 
 const ListItemContainer = styled.li`
@@ -19,10 +22,16 @@ const ListItemContainer = styled.li`
   align-items: center;
   margin-bottom: 8px;
   color: #000000;
-  margin-right: 10px;
   div span {
     color: #c6c6c6;
     margin-right: 10px;
+  }
+  div{
+    display: flex;
+  }
+  svg{
+    margin: 0 5px;
+    color: #C6C6C6;
   }
 `;
 

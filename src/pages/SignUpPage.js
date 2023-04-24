@@ -4,6 +4,7 @@ import MyWalletLogo from "../components/MyWalletLogo";
 import { useState } from "react";
 import BASE_URL from "../constants/baseUrl";
 import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function SignUpPage() {
   const [form, setForm] = useState({
@@ -13,6 +14,7 @@ export default function SignUpPage() {
     confirmPassword: "",
   });
   const navigate = useNavigate();
+  const [waiting, setWaiting] = useState(false);
 
   function handleChange(event) {
     setForm({ ...form, [event.target.name]: event.target.value });
@@ -20,19 +22,21 @@ export default function SignUpPage() {
 
   function signUp(event) {
     event.preventDefault();
+    setWaiting(true);
     if (form.password === form.confirmPassword) {
       const body = { ...form };
       delete body.confirmPassword;
-      console.log(body);
-      console.log(BASE_URL);
 
       axios
         .post(`${BASE_URL}/sign-up`, body)
         .then((response) => {
-          console.log(response);
+          setWaiting(false);
           navigate("/");
         })
-        .catch((err) => alert(err.response.data));
+        .catch((err) => {
+          alert(err.response.data);
+          setWaiting(false);
+        });
     } else {
       alert("Senhas não são iguais!");
     }
@@ -74,7 +78,22 @@ export default function SignUpPage() {
           onChange={handleChange}
           required
         />
-        <button>Cadastrar</button>
+        <button disabled={waiting}>
+          {waiting ? (
+            <ThreeDots
+              height="20"
+              width="40"
+              radius="26"
+              color="#FFFFFF"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={true}
+            />
+          ) : (
+            "Cadastrar"
+          )}
+        </button>
       </form>
 
       <Link to="/">Já tem uma conta? Entre agora!</Link>
@@ -88,4 +107,9 @@ const SingUpContainer = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;

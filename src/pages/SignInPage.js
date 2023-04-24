@@ -5,12 +5,14 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import BASE_URL from "../constants/baseUrl";
 import UserContext from "../contexts/UserContext";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function SignInPage() {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const [waiting, setWaiting] = useState(false);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -30,6 +32,7 @@ export default function SignInPage() {
 
   function signIn(event) {
     event.preventDefault();
+    setWaiting(true);
     axios
       .post(`${BASE_URL}/sign-in`, form)
       .then((response) => {
@@ -38,9 +41,13 @@ export default function SignInPage() {
         const serializedData = JSON.stringify(data);
         localStorage.setItem("userData", serializedData);
         setUser(data);
+        setWaiting(false);
         navigate("/home");
       })
-      .catch((err) => alert(err.response.data));
+      .catch((err) => {
+        setWaiting(false);
+        alert(err.response.data);
+      });
   }
 
   return (
@@ -63,9 +70,23 @@ export default function SignInPage() {
           onChange={handleChange}
           required
         />
-        <button>Entrar</button>
+        <button disabled={waiting}>
+          {waiting ? (
+            <ThreeDots
+              height="20"
+              width="40"
+              radius="26"
+              color="#FFFFFF"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={true}
+            />
+          ) : (
+            "Entrar"
+          )}
+        </button>
       </form>
-
       <Link to="/cadastro">Primeira vez? Cadastre-se!</Link>
     </SingInContainer>
   );
@@ -77,4 +98,9 @@ const SingInContainer = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
