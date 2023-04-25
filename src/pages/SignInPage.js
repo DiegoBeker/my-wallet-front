@@ -60,6 +60,7 @@ export default function SignInPage() {
           name="email"
           value={form.email}
           onChange={handleChange}
+          autoComplete="off"
           required
         />
         <input
@@ -68,6 +69,7 @@ export default function SignInPage() {
           name="password"
           value={form.password}
           onChange={handleChange}
+          autoComplete="off"
           required
         />
         <button disabled={waiting}>

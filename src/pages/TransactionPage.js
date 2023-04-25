@@ -35,7 +35,15 @@ export default function TransactionsPage() {
         },
       };
       axios
-        .post(`${BASE_URL}/transactions`, { ...form, type: tipo }, config)
+        .post(
+          `${BASE_URL}/transactions`,
+          {
+            value: form.value.replace(",", "."),
+            description: form.description,
+            type: tipo,
+          },
+          config
+        )
         .then((response) => {
           setWaiting(false);
           navigate("/home");
@@ -64,6 +72,7 @@ export default function TransactionsPage() {
           name="value"
           value={form.value}
           onChange={handleChange}
+          autoComplete="off"
           required
         />
         <input
@@ -72,6 +81,8 @@ export default function TransactionsPage() {
           name="description"
           value={form.description}
           onChange={handleChange}
+          autoComplete="off"
+          autoCapitalize="sentences"
           required
         />
         <button disabled={waiting}>

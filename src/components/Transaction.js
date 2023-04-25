@@ -1,9 +1,19 @@
 import styled from "styled-components";
 import { TiDelete } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
+import { RotatingLines } from "react-loader-spinner";
+import { useState } from "react";
 
-export default function Transaction({ id, date, description, value, type , deleteTransaction}) {
+export default function Transaction({
+  id,
+  date,
+  description,
+  value,
+  type,
+  deleteTransaction,
+}) {
   const navigate = useNavigate();
+  const [deleting, setDeleting] = useState(false);
 
   function editTransaction() {
     navigate(`/editar-registro/${type}`, {
@@ -12,6 +22,7 @@ export default function Transaction({ id, date, description, value, type , delet
   }
 
   function handleDeleteTransaction() {
+    setDeleting(true);
     deleteTransaction(id);
   }
 
@@ -23,7 +34,17 @@ export default function Transaction({ id, date, description, value, type , delet
       </div>
       <div>
         <Value color={type}>{value.replace(".", ",")}</Value>
-        <TiDelete onClick={handleDeleteTransaction} />
+        {!deleting ? (
+          <TiDelete onClick={handleDeleteTransaction} />
+        ) : (
+          <RotatingLines
+            strokeColor="grey"
+            strokeWidth="5"
+            animationDuration="0.75"
+            width="16"
+            visible={true}
+          />
+        )}
       </div>
     </ListItemContainer>
   );

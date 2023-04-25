@@ -52,6 +52,7 @@ export default function SignUpPage() {
           name="name"
           value={form.name}
           onChange={handleChange}
+          autoComplete="off"
           required
         />
         <input
@@ -60,6 +61,7 @@ export default function SignUpPage() {
           name="email"
           value={form.email}
           onChange={handleChange}
+          autoComplete="off"
           required
         />
         <input
@@ -68,6 +70,7 @@ export default function SignUpPage() {
           name="password"
           value={form.password}
           onChange={handleChange}
+          autoComplete="off"
           required
         />
         <input
@@ -76,6 +79,7 @@ export default function SignUpPage() {
           name="confirmPassword"
           value={form.confirmPassword}
           onChange={handleChange}
+          autoComplete="off"
           required
         />
         <button disabled={waiting}>
