@@ -22,8 +22,10 @@ export default function Transaction({
   }
 
   function handleDeleteTransaction() {
-    setDeleting(true);
-    deleteTransaction(id);
+    if (window.confirm("Deseja apagar registro?")) {
+      setDeleting(true);
+      deleteTransaction(id);
+    }
   }
 
   return (

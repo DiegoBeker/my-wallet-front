@@ -51,25 +51,23 @@ export default function HomePage() {
   }
 
   function deleteTransaction(id) {
-    if (window.confirm("Deseja apagar registro?")) {
-      if (user) {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        };
-        axios
-          .delete(`${BASE_URL}/transactions/${id}`, config)
-          .then((response) => {
-            navigate("/home");
-            setRefresh(!refresh)
-          })
-          .catch((err) => {
-            alert(err.response.data);
-          });
-      } else {
-        navigate("/");
-      }
+    if (user) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      axios
+        .delete(`${BASE_URL}/transactions/${id}`, config)
+        .then((response) => {
+          navigate("/home");
+          setRefresh(!refresh);
+        })
+        .catch((err) => {
+          alert(err.response.data);
+        });
+    } else {
+      navigate("/");
     }
   }
 
@@ -100,9 +98,15 @@ export default function HomePage() {
 
       <TransactionsContainer>
         {transactions.length === 0 ? (
-          <NoTransactionsMessage>Não há registros de entrada ou saída</NoTransactionsMessage>
+          <NoTransactionsMessage>
+            Não há registros de entrada ou saída
+          </NoTransactionsMessage>
         ) : (
-          <Transactions transactions={transactions} balance={balance} deleteTransaction={deleteTransaction} />
+          <Transactions
+            transactions={transactions}
+            balance={balance}
+            deleteTransaction={deleteTransaction}
+          />
         )}
       </TransactionsContainer>
 
